@@ -1,8 +1,7 @@
 from rembg import new_session, remove
-from PIL import Image, ImageEnhance
-import io
 import requests
 import base64
+import io
 
 # Initialize session once for background removal
 session = new_session("isnet-general-use")  # Or use "u2net_human_seg" for portraits
