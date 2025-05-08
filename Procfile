@@ -1,1 +1,1 @@
-web: gunicorn ImageEdit.wsgi
+web: gunicorn ImageEdit.wsgi:application
