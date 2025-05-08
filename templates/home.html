@@ -1,0 +1,350 @@
+{% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>NextGen Image Editing</title>
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
+
+        html, body {
+        height: 100%;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        }
+
+        body {
+            display: flex;
+            background-size: cover;
+            background-position: center;
+            flex-direction: column;
+            }        
+
+        nav {
+            background-color: #1e1e2f;
+            padding: 1rem 2rem;
+            color: #fff;
+            display: flex;
+            justify-content: center; /* center nav content */
+            align-items: center;
+        }
+        
+        nav .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: white;
+        }
+        
+        nav .logo img {
+            width: 30px;
+            height: 30px;
+        }
+        
+
+        .main {
+        flex: 1; /* Fills available vertical space */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 1rem;
+        }
+
+        .container {
+        width: 100%;
+        max-width: 600px;
+        background: #fff;
+        padding: 2rem;
+        align-items: center;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 1rem;
+        }
+
+        input[type="file"] {
+        margin: 1rem 0;
+        display: block;
+        }
+
+        .btn {
+        padding: 10px 20px;
+        background-color: #4f46e5;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        margin: 0.5rem;
+        cursor: pointer;
+        }
+
+        .btn:hover {
+        background-color: #3730a3;
+        }
+
+        .preview, .result {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1rem;
+        }
+
+        img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin: 10px 0;
+        }
+
+        .loader {
+        display: none;
+        margin: 1rem auto;
+        border: 6px solid #f3f3f3;
+        border-top: 6px solid #4f46e5;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
+
+        footer {
+        background-color: #1e1e2f;
+        color: #fff;
+        padding: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+        }
+
+        @media(max-width: 600px){
+        .btn {
+            width: 100%;
+        }
+        }
+        .example-section {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .example-pair {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .example-image {
+            flex: 1;
+            max-width: 250px;
+            text-align: center;
+        }
+        
+        .example-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+        }    
+        .bg {
+            background-image: url("{% static 'background.jpg' %}");
+            background-size: cover;
+            background-position: center;
+        }    
+        .custom-file-upload {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .custom-file-upload input[type="file"] {
+            display: none;
+        }
+        
+        .upload-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            background-color: #4f46e5;
+            color: white;
+            padding: 5px 20px;
+            margin-left: 7vw;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+            width: fit-content;
+        }
+        
+        .upload-label img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .upload-label:hover {
+            background-color: #3730a3;
+        }
+        
+        
+    </style>
+    </head>
+    <body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <img src="https://img.icons8.com/?size=100&id=68247&format=png&color=ffffff" alt="Start Icon" />
+            <span style="font-size: clamp(1rem, 1.5vw, 2rem);">NextGen Image Editing</span>
+            <img src="https://img.icons8.com/?size=100&id=iPqKoSmxmAyJ&format=png&color=ffffff" alt="End Icon" />
+        </div>
+    </nav>
+    
+
+    <div class="bg">
+
+    <div class="main">
+        <div class="container">
+            <div class="example-section">
+                <h3>Background Removal Example</h3>
+                <div class="example-pair">
+                    <div class="example-image">
+                        <p>Original</p>
+                        <img src="{% static 'bg_original.png' %}" alt="Original Background" />
+                    </div>
+                    <div class="example-image">
+                        <p>Background Removed</p>
+                        <img src="{% static 'bg_removed.png' %}" alt="Removed Background" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="example-section">
+                <h3>Image Enhancement Example</h3>
+                <div class="example-pair">
+                    <div class="example-image">
+                        <p>Original</p>
+                        <img src="{% static 'enhance_original_1.jpg' %}" alt="Original Enhanced" />
+                    </div>
+                    <div class="example-image">
+                        <p>Enhanced</p>
+                        <img src="{% static 'enhanced_result_1.png' %}" alt="Enhanced Result" />
+                    </div>
+                </div>
+                <div class="example-pair">
+                    <div class="example-image">
+                        <p>Original</p>
+                        <img src="{% static 'enhance_original_2.png' %}" alt="Original Enhanced" />
+                    </div>
+                    <div class="example-image">
+                        <p>Enhanced</p>
+                        <img src="{% static 'enhanced_result_2.png' %}" alt="Enhanced Result" />
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div class="main">
+        <div class="container">
+        <h1>Edit Your Image Smartly</h1>
+        <div class="custom-file-upload">
+            <label for="imageUpload" class="upload-label">
+                <img src="https://img.icons8.com/?size=100&id=COpL3kA2RpqX&format=png&color=000000" alt="Upload Icon" />
+                <span>Choose Image</span>
+            </label>
+            <input type="file" id="imageUpload" accept="image/*" />
+        </div>
+        
+                <div class="preview">
+            <img id="previewImage" src="#" alt="Preview" style="display: none;" />
+        </div>
+
+        <div class="loader" id="loader"></div>
+
+        <div style="text-align: center;">
+            <button class="btn" onclick="processImage('remove')">Remove Background</button>
+            <button class="btn" onclick="processImage('enhance')">Enhance Image</button>
+        </div>
+
+        <div class="result" id="resultSection" style="display: none;">
+            <h3>Processed Image:</h3>
+            <img id="processedImage" src="#" alt="Processed" />
+            <a id="downloadBtn" class="btn" download="processed_image.png">Download</a>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- Footer -->
+    <footer>
+        © 2025 NextGen Image Editing. Built with ❤️ by Abhay.
+    </footer>
+
+    <script>
+        const imageUpload = document.getElementById("imageUpload");
+        const previewImage = document.getElementById("previewImage");
+        const loader = document.getElementById("loader");
+        const resultSection = document.getElementById("resultSection");
+        const processedImage = document.getElementById("processedImage");
+        const downloadBtn = document.getElementById("downloadBtn");
+
+        let selectedFile = null;
+
+        imageUpload.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            selectedFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+            previewImage.src = e.target.result;
+            previewImage.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        }
+        });
+
+        function processImage(action) {
+        if (!selectedFile) {
+            alert("Please upload an image first.");
+            return;
+        }
+
+        loader.style.display = "block";
+        resultSection.style.display = "none";
+
+        const formData = new FormData();
+        formData.append("image", selectedFile);
+        formData.append("action", action);
+
+        fetch("/process-image/", {
+            method: "POST",
+            body: formData,
+        })
+        .then(res => res.blob())
+        .then(blob => {
+            loader.style.display = "none";
+            const url = URL.createObjectURL(blob);
+            processedImage.src = url;
+            resultSection.style.display = "flex";
+            downloadBtn.href = url;
+        })
+        .catch(err => {
+            loader.style.display = "none";
+            alert("Processing failed.");
+            console.error(err);
+        });
+        }
+    </script>
+    </body>
+    </html>
