@@ -15,8 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.views.static import serve
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Edit.urls')),
+    path('', include('Edit.urls')),  # Adjust the 'Edit' app name if necessary
+    re_path(r'^google-site-verification\.html$', serve, {'path': 'googlede2f39f7ff489703.html', 'document_root': settings.BASE_DIR}),
 ]
+
